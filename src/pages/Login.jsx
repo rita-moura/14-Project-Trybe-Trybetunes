@@ -17,19 +17,15 @@ class Login extends Component {
 
   validateButton = () => {
     const { name } = this.state;
-    const MIN_LENGTH = 2;
-    const nameInput = name.length >= MIN_LENGTH;
-    return nameInput;
+    const MIN_LENGTH = 3;
+    this.setState({ isValidButton: name.length >= MIN_LENGTH });
   };
 
   handleChange = ({ target }) => {
     const { name, value } = target;
     this.setState({
       [name]: value,
-    });
-    this.setState({
-      isValidButton: this.validateButton(),
-    });
+    }, (this.validateButton));
   };
 
   onClickButton = (event) => {
@@ -80,7 +76,7 @@ class Login extends Component {
 }
 
 Login.propTypes = {
-  history: Proptypes.string.isRequired,
-};
+  history: Proptypes.object,
+}.isRequired;
 
 export default Login;
