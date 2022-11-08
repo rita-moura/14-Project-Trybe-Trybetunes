@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Header from '../Components/Header';
 import MusicCard from '../Components/MusicCard';
 import getMusics from '../services/musicsAPI';
-import { addSong } from '../services/favoriteSongsAPI';
+import { addSong /* getFavoriteSongs */ } from '../services/favoriteSongsAPI';
 import Loading from '../Components/Loading';
 
 class Album extends Component {
@@ -17,11 +17,11 @@ class Album extends Component {
 
   componentDidMount() {
     this.fetchMusic();
-    this.getMusicsSaved();
+    // this.getMusicsSaved();
   }
 
   handleChange = ({ target }) => {
-    const LIMIT = 1000;
+    const LIMIT = 100;
     const { name, checked } = target;
     const { musics } = this.state;
     addSong();
@@ -50,10 +50,11 @@ class Album extends Component {
   };
 
   // getMusicsSaved = async () => {
+  //   const { name } = this.state;
   //   const favoritesMusics = await getFavoriteSongs();
-  //   const getFavorites = favoritesMusics.forEach((favorite) => {
-
-  //   });
+  //   const getFavorites = favoritesMusics.filter((music) => (
+  //     music.trackName === trackName;
+  //   )),
   // };
 
   render() {
@@ -69,9 +70,9 @@ class Album extends Component {
 
         <h5 data-testid="album-name">{ artist.collectionName }</h5>
 
-        { musics.map(({ trackName, previewUrl, artistId, trackId }, index) => (
+        { musics.map(({ trackName, previewUrl, trackId }) => (
           <MusicCard
-            key={ artistId + index }
+            key={ Math.random() }
             trackName={ trackName }
             previewUrl={ previewUrl }
             favorites={ favorites }
