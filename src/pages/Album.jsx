@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Header from '../Components/Header';
 import MusicCard from '../Components/MusicCard';
 import getMusics from '../services/musicsAPI';
-import { addSong /* getFavoriteSongs */ } from '../services/favoriteSongsAPI';
+import { addSong, getFavoriteSongs } from '../services/favoriteSongsAPI';
 import Loading from '../Components/Loading';
 
 class Album extends Component {
@@ -15,10 +15,20 @@ class Album extends Component {
     checkboxControl: {},
   };
 
-  componentDidMount() {
+  async componentDidMount() {
     this.fetchMusic();
-    // this.getMusicsSaved();
+    this.handleFavorites();
   }
+
+  handleFavorites = async () => {
+    const getFavorites = await getFavoriteSongs();
+    if (getFavorites) {
+      getFavorites.forEach(({ trackName }) => (
+        this.setState((prev) => ({
+          checkboxControl: { ...prev.checkboxControl, [trackName]: true },
+        }))));
+    }
+  };
 
   handleChange = ({ target }) => {
     const LIMIT = 100;
@@ -48,14 +58,6 @@ class Album extends Component {
       musics: copyArray,
     });
   };
-
-  // getMusicsSaved = async () => {
-  //   const { name } = this.state;
-  //   const favoritesMusics = await getFavoriteSongs();
-  //   const getFavorites = favoritesMusics.filter((music) => (
-  //     music.trackName === trackName;
-  //   )),
-  // };
 
   render() {
     const { musics, artist, favorites, loading, checkboxControl } = this.state;
